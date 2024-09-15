@@ -23,13 +23,9 @@ const News = () => {
   const news = useSelector((state) => state.data.news);
   const status = useSelector((state) => state.data.status);
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
-    dispatch(fetchNews())
-      .then(() => setLoading(false))
-      .catch(() => setLoading(false));
+    dispatch(fetchNews());
   }, [dispatch]);
 
   const formatDate = (dateString) => {
@@ -39,13 +35,11 @@ const News = () => {
 
   return (
     <div className="flex flex-col items-center w-full mt-5">
-      {loading || status === "loading" ? (
-        // Show skeleton loaders while loading
+      {status === "loading" ? (
         Array.from({ length: 5 }).map((_, index) => (
           <SkeletonLoader key={index} />
         ))
       ) : news.length > 0 ? (
-        // Render news articles if available
         news.map((article, index) => (
           <div
             key={index}

@@ -2,6 +2,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const SERVER_URL = "https://aco-news-backend.onrender.com/";
+// const SERVER_URL = "http://localhost:8080/";
+
 const initialState = {
   news: [],
   status: "idle",
@@ -9,15 +11,8 @@ const initialState = {
 };
 
 export const fetchNews = createAsyncThunk("data/fetchNews", async () => {
-  console.log("API call", ` ${SERVER_URL}api/news/get-all`);
-  try {
-    const response = await axios.get(` ${SERVER_URL}api/news/get-all`);
-
-    return response.data.articles;
-  } catch (error) {
-    console.error("Error fetching news:", error);
-    throw error;
-  }
+  const response = await axios.get(` ${SERVER_URL}api/news/get-all`);
+  return response.data.articles;
 });
 
 export const filterData = createAsyncThunk(
@@ -65,8 +60,7 @@ const dataSlice = createSlice({
         state.news = action.payload;
       })
       .addCase(fetchNews.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.error.message;
+        state.status = "loading";
       });
 
     builder
