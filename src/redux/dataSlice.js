@@ -9,8 +9,10 @@ const initialState = {
 };
 
 export const fetchNews = createAsyncThunk("data/fetchNews", async () => {
+  console.log("API call", ` ${SERVER_URL}api/news/get-all`);
   try {
     const response = await axios.get(` ${SERVER_URL}api/news/get-all`);
+
     return response.data.articles;
   } catch (error) {
     console.error("Error fetching news:", error);
