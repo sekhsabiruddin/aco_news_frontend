@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const SERVER_URL = "https://aco-news-backend.onrender.com/";
 const initialState = {
   news: [],
   status: "idle",
@@ -9,7 +10,7 @@ const initialState = {
 
 export const fetchNews = createAsyncThunk("data/fetchNews", async () => {
   try {
-    const response = await axios.get("http://localhost:8080/api/news/get-all");
+    const response = await axios.get(` ${SERVER_URL}api/news/get-all`);
     return response.data.articles;
   } catch (error) {
     console.error("Error fetching news:", error);
@@ -21,14 +22,11 @@ export const filterData = createAsyncThunk(
   "data/filterData",
   async ({ category }) => {
     try {
-      const response = await axios.get(
-        "http://localhost:8080/api/news/top-headlines",
-        {
-          params: {
-            category,
-          },
-        }
-      );
+      const response = await axios.get(` ${SERVER_URL}api/news/top-headlines`, {
+        params: {
+          category,
+        },
+      });
       return response.data.articles;
     } catch (error) {
       console.error("Error fetching filtered news:", error);
@@ -39,7 +37,7 @@ export const filterData = createAsyncThunk(
 
 export const searchData = createAsyncThunk("data/searchData", async ({ q }) => {
   try {
-    const response = await axios.get("http://localhost:8080/api/news/search", {
+    const response = await axios.get(` ${SERVER_URL}api/news/search`, {
       params: {
         q,
       },
